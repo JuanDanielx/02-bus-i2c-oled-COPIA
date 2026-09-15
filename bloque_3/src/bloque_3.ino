@@ -17,15 +17,17 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET_PIN);
 
 // Función modular reutilizable para imprimir módulos con estado alineado
-void logBoot(const char* moduleName, bool isOk) {
+void logBoot(const char *moduleName, bool isOk)
+{
     // TODO 3.1: Imprimir el nombre del módulo en la posición actual del cursor:
     // display.print(moduleName);
     /* ESCRIBE TU CÓDIGO AQUÍ */
-
+    display.print(moduleName);
     // TODO 3.2: Alinear el estado a la derecha en la columna X=95 sin alterar la fila Y actual.
     // Pregunta Guía: ¿Por qué usamos display.getCursorY() en lugar de un número fijo como 20?
     // Pista: display.setCursor(95, display.getCursorY());
     /* ESCRIBE TU CÓDIGO AQUÍ */
+    display.setCursor(95, display.getCursorY());
 
     // TODO 3.3: Según el valor de isOk (true/false), imprimir "[OK]" o "[ERR]":
     // if (isOk) {
@@ -34,28 +36,40 @@ void logBoot(const char* moduleName, bool isOk) {
     //     display.println("[ERR]");
     // }
     /* ESCRIBE TU CÓDIGO AQUÍ */
+    if (isOk)
+    {
+        display.println("[OK]");
+    }else
+    {
+        display.println("[ERR]");
+    }
 
     // TODO 3.4: Volcar los cambios del buffer al vidrio físico y pausar 200ms para efecto visual:
     // display.display();
     // delay(200);
+    display.display();
+    delay(200);
 }
 
-void setup() {
+void setup()
+{
     Serial.begin(SERIAL_BAUD);
     delay(1000);
     Serial.println("\n[BLOQUE 3] Demostración de Telemetría logBoot()...");
 
     Wire.begin(21, 22);
 
-    if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDR)) {
+    if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDR))
+    {
         Serial.println("[OLED] ERROR: Pantalla no detectada.");
-        while (true);
+        while (true)
+            ;
     }
 
     display.clearDisplay();
     display.setTextColor(SSD1306_WHITE);
     display.setTextSize(1);
-    
+
     // Cabecera
     display.setCursor(8, 0);
     display.println(">> ESP32 SISTEMA <<");
@@ -67,10 +81,13 @@ void setup() {
     // logBoot("ESP32 Core", true);
     // logBoot("Sensor I2C", true);
     /* ESCRIBE TU CÓDIGO AQUÍ */
+    logBoot("ESP32 Core", true);
+    logBoot("Sensor I2C", true);
 
     Serial.println("[BLOQUE 3] Telemetría renderizada correctamente.");
 }
 
-void loop() {
+void loop()
+{
     delay(1000);
 }

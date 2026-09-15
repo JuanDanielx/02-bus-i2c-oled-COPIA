@@ -93,18 +93,22 @@ void runSystemPOST() {
 
     // TODO 4.1: Mostrar la cabecera visual invocando showBootHeader()
     /* ESCRIBE TU CÓDIGO AQUÍ */
-
+    showBootHeader();
     // TODO 4.2: Probar secuencialmente los 4 subsistemas usando logBoot(nombre, estado):
     // 1. logBoot("ESP32 240MHz", true);
     // 2. logBoot("I2C @ 400kHz", true);
     // 3. logBoot("OLED 0x3C", true);
     // 4. logBoot("Bateria 8.4V", true);
     /* ESCRIBE TU CÓDIGO AQUÍ */
-
+    logBoot("ESP32 240MHz", true);
+    logBoot("I2C @ 400kHz", true);
+    logBoot("OLED 0x3C", true);
+    logBoot("Bateria 8.4V", true);
     delay(500);
 
     // TODO 4.3: Concluir la rutina mostrando la barra final con showSystemReady()
     /* ESCRIBE TU CÓDIGO AQUÍ */
+    showSystemReady();
 }
 
 void setup() {
@@ -122,6 +126,14 @@ void setup() {
     //    Ejecutar runSystemPOST();
     // 3. Si no, reportar falla por el Serial Monitor.
     /* ESCRIBE TU CÓDIGO AQUÍ */
+    int total = scanI2CBus();
+    if (total > 0 && initDisplay()){
+    runSystemPOST();
+}else
+    {
+    Serial.println("[BOOT] FALLA CRÍTICA: No se encontraron dispositivos I2C o la pantalla no respondió.");
+    }
+    
 }
 
 void loop() {
